@@ -497,9 +497,12 @@ T_Gamma * GenerateGamma(T_CA * CA){
             }
             CAports = CAports->next;
         }
-        entry[strlen(entry)-3] = '\0';
 
-        entry = AppendChars(entry," sss ");
+        if(strncmp(entry,"&&",strlen(entry)-3)==0){
+            entry[strlen(entry)-3] = '\0';
+        }
+
+        entry = AppendChars(entry," <--> ");
 
         entry = AppendChars(entry," <t_");
 
@@ -533,7 +536,7 @@ int main(int argc, char *argv[]) {
     FILE *dest = fopen(argv[4], "w");
     T_Gamma * temp = g;
     while(temp){
-        fprintf(dest, "%s\n\n", temp->transition);
+        fprintf(dest, "%s\n", temp->transition);
         temp = temp->next;
     }
     fclose(dest);

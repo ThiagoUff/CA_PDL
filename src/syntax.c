@@ -1104,6 +1104,8 @@ int GenerateTree(int argc, char *argv[]){
         //    return 2;
        // }
     }
-
     generateSyntaxTree(argv[3],argv[2]);
+    //if(generateSyntaxTree(argv[3],argv[2])==1){
+    //    exit(1);
+    //}
 }
