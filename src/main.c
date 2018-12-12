@@ -518,7 +518,38 @@ T_Gamma * GenerateGamma(T_CA * CA){
         t = t->next;
         index++;
     }
+    t = CA->transitions;
+    entry = NULL;
+    index =0;
+    while(t) {
+        entry = AppendChars(entry,"NEG ");
+
+        entry = AppendChars(entry,"<t_");
+        char str[12];
+        sprintf(str, "%d", index);
+        entry = AppendChars(entry,str);
+        entry = AppendChars(entry,"> ");
+
+        str[12];
+        sprintf(str, "%d", 1);
+        entry = AppendChars(entry,str);
+        if(t->next){
+            entry = AppendChars(entry," && ");
+        }else{
+            entry = AppendChars(entry," ");
+        }
+        t = t->next;
+        index++;
+    }
+
+    entry = AppendChars(entry," --> ");
+    char str[12];
+    sprintf(str, "%d", 0);
+    entry = AppendChars(entry,str);
+    GammaAppendtransition(&Gamma,entry);
+
     return Gamma;
+
 }
 
 

@@ -4,11 +4,15 @@ STATES STATES
 id s0
 , ,
 id s1
+, ,
+id s2
 INITIAL INITIAL
 STATES STATES
 id s0
 NAMES NAMES
 id n0
+, ,
+id n1
 TRANSITIONS TRANSITIONS
 id s0
 : :
