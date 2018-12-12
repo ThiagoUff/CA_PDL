@@ -46,6 +46,44 @@ T_PortList * NewPortList();
 T_StateList * NewStateList();
 
 
+void freeGamma(T_Gamma * gamma){
+    T_Gamma * temp = gamma;
+    while(temp){
+        free(temp->transition);
+        T_Gamma * old = temp;
+        temp = temp->next;
+        free(old);
+    }
+}
+
+void freeCA(T_CA * ca){
+
+    T_TransitionList * temp = ca->transitions;
+    while(temp){
+        free(temp->transition);
+        T_TransitionList * old = temp;
+        temp = temp->next;
+        free(old);
+    }
+    T_StateList * temp2 = ca->states;
+    while(temp2){
+        free(temp2->state);
+        T_StateList * old = temp2;
+        temp2 = temp2->next;
+        free(old);
+    }
+
+    T_PortList * temp3 = ca->ports;
+    while(temp3){
+        free(temp3->port);
+        T_PortList * old = temp3;
+        temp3 = temp3->next;
+        free(old);
+    }
+
+    free(ca->startState);
+    free(ca);
+}
 
 T_Transition * setTransitionStartState (char *startState, T_Transition * t){
     t->startState= (char *)malloc(sizeof(char)*strlen(startState));
@@ -571,5 +609,6 @@ int main(int argc, char *argv[]) {
         temp = temp->next;
     }
     fclose(dest);
-
+    freeGamma(g);
+    freeCA(CA);
 }
