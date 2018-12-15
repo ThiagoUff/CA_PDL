@@ -1,7 +1,6 @@
 #include "lex.c"
 #include "syntax.c"
 
-
 typedef struct constraintList {
     char * constraint;
     struct constraintList * next;
@@ -41,10 +40,33 @@ typedef struct Gamma {
     struct Gamma * next;
 }T_Gamma;
 
-T_ContraintList * NewConstraintList();
-T_PortList * NewPortList();
+void freeGamma(T_Gamma * gamma);
+void freeCA(T_CA * ca);
+T_Transition * setTransitionStartState (char *startState, T_Transition * t);
+T_Transition * setTransitionDestState (char *destState, T_Transition * t);
+T_Transition * CreateEmptyTranstion();
+T_TransitionList* newTransitionList(T_Transition * t);
+void appendTransition(T_TransitionList ** list, T_Transition* t);
+T_CA * CreateEmptyCA();
+T_CA * setCAState ( T_StateList * list,char *state);
+T_CA * setCAStartState (char *state, T_CA * t);
+T_Gamma * NewGamma(char * trans);
+void GammaAppendtransition(T_Gamma ** Gamma,char * trans);
 T_StateList * NewStateList();
-
+void AppendState(T_StateList ** list);
+T_PortList * NewPortList();
+void AppendPort(T_PortList ** list);
+T_ContraintList * NewConstraintList();
+void AppendConstraint(T_ContraintList ** list);
+void AppendPortChars(T_PortList * list,char * extra);
+void AppendConstraintChars(T_ContraintList * list,char * extra);
+char * AppendChars(char * atual,char * extra);
+void gerenateTransitionAux(Node * t,T_CA * CA,T_Transition * trans,int pos);
+void generateStates(Node * t,T_CA * CA);
+void generateStartStates(Node * t,T_CA * CA);
+void generatePorts(Node * t,T_CA * CA);
+void gerenateCA(Node * t,T_CA * list);
+T_Gamma * GenerateGamma(T_CA * CA);
 
 void freeGamma(T_Gamma * gamma){
     T_Gamma * temp = gamma;
@@ -57,7 +79,6 @@ void freeGamma(T_Gamma * gamma){
 }
 
 void freeCA(T_CA * ca){
-
     T_TransitionList * temp = ca->transitions;
     while(temp){
         free(temp->transition);
@@ -90,12 +111,12 @@ T_Transition * setTransitionStartState (char *startState, T_Transition * t){
     strcpy(t->startState,startState);
     return t;
 }
+
 T_Transition * setTransitionDestState (char *destState, T_Transition * t){
     t->destState= (char *)malloc(sizeof(char)*strlen(destState));
     strcpy(t->destState,destState);
     return t;
 }
-
 
 T_Transition * CreateEmptyTranstion(){
     T_Transition * temp = (T_Transition *) malloc(sizeof(T_Transition));
@@ -129,7 +150,6 @@ void appendTransition(T_TransitionList ** list, T_Transition* t){
     }
 }
 
-
 T_CA * CreateEmptyCA(){
     T_CA * temp = (T_CA *) malloc(sizeof(T_CA));
     temp->startState = NULL;
@@ -156,7 +176,6 @@ T_CA * setCAState ( T_StateList * list,char *state){
         strcat(temp->state, concat);
         strcat(temp->state, state);
     }
-
 }
 
 T_CA * setCAStartState (char *state, T_CA * t){
@@ -175,8 +194,6 @@ T_CA * setCAStartState (char *state, T_CA * t){
     return t;
 }
 
-
-
 T_Gamma * NewGamma(char * trans){
     T_Gamma * temp = (T_Gamma *) malloc(sizeof(T_Gamma));
     temp->transition = (char*) malloc(sizeof(char)* strlen(trans));
@@ -186,7 +203,6 @@ T_Gamma * NewGamma(char * trans){
 }
 
 void GammaAppendtransition(T_Gamma ** Gamma,char * trans){
-
     if(!trans) return;
 
     if(! *Gamma){
@@ -200,7 +216,6 @@ void GammaAppendtransition(T_Gamma ** Gamma,char * trans){
         p->next = NewGamma(trans);
     }
 }
-
 
 T_StateList * NewStateList(){
     T_StateList * temp = (T_StateList *) malloc(sizeof(T_StateList));
@@ -221,18 +236,6 @@ void AppendState(T_StateList ** list){
         p->next = NewStateList();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 T_PortList * NewPortList(){
     T_PortList * temp = (T_PortList *) malloc(sizeof(T_PortList));
@@ -274,7 +277,6 @@ void AppendConstraint(T_ContraintList ** list){
     }
 }
 
-
 void AppendPortChars(T_PortList * list,char * extra){
     T_PortList * temp = list;
     while(temp->next){
@@ -293,8 +295,6 @@ void AppendPortChars(T_PortList * list,char * extra){
         strcat(temp->port, extra);
     }
 }
-
-
 
 void AppendConstraintChars(T_ContraintList * list,char * extra){
     T_ContraintList * temp = list;
@@ -315,8 +315,6 @@ void AppendConstraintChars(T_ContraintList * list,char * extra){
     }
 }
 
-
-
 char * AppendChars(char * atual,char * extra){
     if(atual ==NULL){
         atual= (char *)malloc(strlen(extra)+1);
@@ -332,9 +330,6 @@ char * AppendChars(char * atual,char * extra){
     }
     return atual;
 }
-
-
-
 
 void gerenateTransitionAux(Node * t,T_CA * CA,T_Transition * trans,int pos){
     if(t == NULL) return;
@@ -483,10 +478,6 @@ void gerenateCA(Node * t,T_CA * list){
 
 }
 
-
-
-
-
 T_Gamma * GenerateGamma(T_CA * CA){
     T_TransitionList * t = CA->transitions;
     char * entry = NULL;
@@ -589,7 +580,6 @@ T_Gamma * GenerateGamma(T_CA * CA){
     return Gamma;
 
 }
-
 
 int main(int argc, char *argv[]) {
     GenerateLex(argc, argv);
